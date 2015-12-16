@@ -47,17 +47,20 @@ class ImageGenerator{
 			$poscount = count($imgpos);
 			list($sx2,$sy2) = self::imagexy($im2);
 			for ($p = 0; $p < $poscount; $p++){
+				$rotim2 = imagerotate($im2, 360-$imgpos[$p][4], imageColorAllocateAlpha($im2, 0, 0, 0, 127));
+				$sizeX = imagesx($rotim2);
+				$sizeY = imagesy($rotim2);
 				//colour fill
-				if(count($imgpos[$p]) > 4){
+				if(count($imgpos[$p]) > 5){
 					list($x1, $y1, $x2, $y2) = $imgpos[$p];
-					list($r, $g, $b) = self::convertToRGB($imgpos[$p][4]);
+					list($r, $g, $b) = self::convertToRGB($imgpos[$p][5]);
 					$colour = imagecolorallocate($img, $r, $g, $b);
 					imagefilledrectangle($img, $x1 * $sx, $y1 * $sy, $x2 * $sx, $y2 * $sy, $colour);
 				}
 				
 				//source image
-				list($x1, $y1, $x2, $y2) = self::getBestFit($imgpos[$p], $sx2, $sy2, $sx, $sy);
-				imagecopyresampled($img, $im2, $x1, $y1, 0, 0, $x2-$x1, $y2-$y1, $sx2, $sy2);
+				list($x1, $y1, $x2, $y2) = self::getBestFit($imgpos[$p], $sizeX, $sizeX, $sx, $sy);
+				imagecopyresampled($img, $rotim2, $x1, $y1, 0, 0, $x2-$x1, $y2-$y1, $sizeX, $sizeX);
 			}
 			imagedestroy($im2);
 		}
@@ -72,10 +75,6 @@ class ImageGenerator{
 			}
 		}
 		return $img;
-	}
-	
-	function generateRand(){
-		return self::generate($db, $templatePath, $imgpath, $imgid, $pos);
 	}
 	
 	//args: pos array (x1, y1, x2, y2), image width, image height, total width, total height

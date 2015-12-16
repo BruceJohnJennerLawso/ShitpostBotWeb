@@ -287,13 +287,14 @@ function format() {
 			lst = pen;
 		}
 		var ecl = cur[1];
-		if(typeof cur[2] === 'undefined'){
+		if(cur[2] == null){
 			var	pos = [round(ecl[0] / size.x), round(ecl[1] / size.y),
-					   round(ecl[2] / size.x), round(ecl[3] / size.y)];
+					   round(ecl[2] / size.x), round(ecl[3] / size.y),
+					   cur[3]];
 		} else{
 			var	pos = [round(ecl[0] / size.x), round(ecl[1] / size.y),
 					   round(ecl[2] / size.x), round(ecl[3] / size.y),
-					   cur[2]];
+				       cur[3], cur[2]];
 		}
 		locs.push(pos);
 	}
