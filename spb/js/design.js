@@ -69,7 +69,8 @@ function draw(){
 		ctx.strokeRect(rectStartX, rectStartY, mouseX - rectStartX, mouseY - rectStartY);
 		ctx.setLineDash([1,0]);
 	}
-	
+
+	ctx.font="bold 20px sans-serif";
 	//then all the rectangles that have been drawn already
 	for(var p = 0; p < rects.length; p++){
 		var rdata = rects[p];
@@ -80,6 +81,11 @@ function draw(){
 		}
 		ctx.strokeStyle = styles[rdata[0]];
 		ctx.strokeRect(rect[0], rect[1], rect[2] - rect[0], rect[3] - rect[1]);
+
+		ctx.fillStyle = '#fff';
+		ctx.strokeStyle = '#000';
+		ctx.fillText(p+1, rect[0] + 2, rect[1] + 17);
+		ctx.strokeText(p+1, rect[0] + 2, rect[1] + 17);
 	}
 }
 
