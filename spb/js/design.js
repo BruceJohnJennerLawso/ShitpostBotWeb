@@ -75,17 +75,35 @@ function draw(){
 	for(var p = 0; p < rects.length; p++){
 		var rdata = rects[p];
 		var rect = rdata[1];
-		if(typeof rdata[2] !== 'undefined') {
+
+		var x = rect[0];
+		var y = rect[1];
+		var w = rect[2] - rect[0];
+		var h = rect[3] - rect[1];
+
+		var rotatePointX = x + w / 2
+		var rotatePointY = y + h / 2;
+		var degrees = rdata[3]*Math.PI/180;
+
+		ctx.translate(rotatePointX, rotatePointY);
+		ctx.rotate(degrees);
+		ctx.translate(-rotatePointX, -rotatePointY);
+
+		if(rdata[2] !== null) {
 			ctx.fillStyle = '#'+rdata[2];
-			ctx.fillRect(rect[0], rect[1], rect[2] - rect[0], rect[3] - rect[1]);
+			ctx.fillRect(x, y, w, h);
 		}
 		ctx.strokeStyle = styles[rdata[0]];
-		ctx.strokeRect(rect[0], rect[1], rect[2] - rect[0], rect[3] - rect[1]);
+		ctx.strokeRect(x, y, w, h);
 
 		ctx.fillStyle = '#fff';
 		ctx.strokeStyle = '#000';
 		ctx.fillText(p+1, rect[0] + 2, rect[1] + 17);
 		ctx.strokeText(p+1, rect[0] + 2, rect[1] + 17);
+
+		ctx.translate(rotatePointX, rotatePointY);
+		ctx.rotate(-degrees);
+		ctx.translate(-rotatePointX, -rotatePointY);
 	}
 }
 
@@ -123,13 +141,13 @@ function addRectangle(){
 			return true;
 		});
 		doLiveUpdate();
-	} else if (width > minRectSize && height > minRectSize && getRectCount() < maxRectCount && !checkIntersection(x1, y1, x2, y2)){
+	} else if (width > minRectSize && height > minRectSize && getRectCount() < maxRectCount/* && !checkIntersection(x1, y1, x2, y2)*/){
 		if(shouldAddFillColour()){
 			if(isFillColourValid()){
-				rects.push([penId, [x1, y1, x2, y2], getSelectedFillColour()]);
+				rects.push([penId, [x1, y1, x2, y2], getSelectedFillColour(), Math.random() * 360]);
 			}
 		} else{
-			rects.push([penId, [x1, y1, x2, y2]]);
+			rects.push([penId, [x1, y1, x2, y2], null, Math.random() * 360]);
 		}
 		doLiveUpdate();
 	}
