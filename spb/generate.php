@@ -46,6 +46,6 @@ if(isset($_GET['w']) || isset($_GET['h'])){
 	$img = $newimg;
 }
 
-header('Content-Type: image/jpg');
+//header('Content-Type: image/jpg');
 imagejpeg($img);
 imagedestroy($img);
