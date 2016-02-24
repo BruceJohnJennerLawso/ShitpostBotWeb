@@ -48,7 +48,7 @@ class Template{
 	}	
 
 	public function getReviewState(){
-		return $this->positions;
+		return $this->reviewState;
 	}	
 
 	public function getTimeAdded(){
