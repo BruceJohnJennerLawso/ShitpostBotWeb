@@ -6,9 +6,11 @@
   Posted by <a href='profile.php?u={{ s.userId }}'>{{ s.submitterName }}</a> on <span class="time"time="{{ s.timeAdded }}">...</span><br>
   Accepted by <a href='profile.php?u={{ s.reviewedBy }}'>{{ s.reviewerName }}</a> on <span class="time" time="{{ s.timeReviewed }}">...</span><br>
   {% if isLoggedIn and me.admin is not null and me.admin.canReview %}
-    <button class='review' id='deny' code='{{ s.sourceId }}' type='s' state='d' return='{{ lastPage }}'>Deny</button>
+    <button class='review' id='deny' code='{{ s.sourceId }}' type='s' state='a' return='{{ lastPage }}'>Accept</button>
     <button class='review' id='deny' code='{{ s.sourceId }}' type='s' state='p' return='{{ lastPage }}'>Make Pending</button>
+    <button class='review' id='deny' code='{{ s.sourceId }}' type='s' state='d' return='{{ lastPage }}'>Deny</button>
   {% endif %}
+  This source image is currently {{ s.reviewState == 'p' ? 'Pending' : (s.reviewState == 'a' ? 'Accepted' : 'Denied') }}
   <img class='center' src='resize.php?i={{ s.image|url_encode }}&w=600'>
 {% else %}
 <h2>Image not found.</h2>
