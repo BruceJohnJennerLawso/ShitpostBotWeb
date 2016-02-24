@@ -4,13 +4,15 @@
 
 {% if isValidItem %}
   Posted by <a href='profile.php?u={{ t.userId }}'>{{ t.submitterName }}</a> on <span class="time" time="{{ t.timeAdded }}">...</span><br>
-  Accepted by <a href='profile.php?u={{ t.reviewedBy }}'>{{ t.reviewerName }}</a> on <span class="time" time="{{ t.timeReviewed }}">...</span><br>
-  {% if isLoggedIn and me.admin is not null and me.admin.canReview %}
-    <button class='review' id='deny' code='{{ t.templateId }}' type='t' state='a' return='{{ lastPage }}'>Accept</button>
-    <button class='review' id='deny' code='{{ t.templateId }}' type='t' state='p' return='{{ lastPage }}'>Make Pending</button>
-    <button class='review' id='deny' code='{{ t.templateId }}' type='t' state='d' return='{{ lastPage }}'>Deny</button>
+  {% if t.reviewState == 'a' %}
+    Accepted by <a href='profile.php?u={{ t.reviewedBy }}'>{{ t.reviewerName }}</a> on <span class="time" time="{{ t.timeReviewed }}">...</span><br>
   {% endif %}
-  This template is currently {{ t.reviewState == 'p' ? 'Pending' : (t.reviewState == 'a' ? 'Accepted' : 'Denied') }}
+  {% if isLoggedIn and me.admin is not null and me.admin.canReview %}
+    {% if t.reviewState != 'a' %}<button class='review' code='{{ t.templateId }}' type='t' state='a' return='{{ lastPage }}'>Accept</button>{% endif %}
+    {% if t.reviewState != 'p' %}<button class='review' code='{{ t.templateId }}' type='t' state='p' return='{{ lastPage }}'>Make Pending</button>{% endif %}
+    <button class='review' code='{{ t.templateId }}' type='t' state='d' return='{{ lastPage }}'>Deny</button><br/>
+  {% endif %}
+  This template is currently <b>{{ t.reviewState == 'p' ? 'pending' : (t.reviewState == 'a' ? 'accepted' : 'denied') }}</b>
   <div class="row">
     <div class="col-md-6 header">Template</div>
     <div class="col-md-6 header">Example Usage</div>
